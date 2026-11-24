@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#202337" />
+    <title>协作台 · 本地 Agent 工作台</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <div class="layout" id="layout">
+      <button id="veil" hidden aria-label="关闭侧栏"></button>
+      <aside class="sidebar" id="side" aria-label="工作区导航">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><i></i><b></b></span>
+          <div class="brand-type"><b>协作台</b><span>Collab Desk</span></div>
+        </div>
+        <button id="newRoom" class="primary new-room">
+          <span aria-hidden="true">+</span> 新建讨论室
+        </button>
+        <label class="search-field"
+          ><i class="search-icon" aria-hidden="true"></i
+          ><input
+            id="roomSearch"
+            type="search"
+            aria-label="搜索讨论室"
+            placeholder="搜索讨论室"
+          /><kbd aria-hidden="true">⌘ K</kbd></label
+        >
+        <div class="nav-block">
+          <div class="section-title">讨论室 <span id="roomCount"></span></div>
+          <nav id="rooms" aria-label="讨论室列表"></nav>
+        </div>
+        <div class="nav-block agents-block">
+          <div class="section-title">
+            我的 Agent
+            <button
+              id="addAgent"
+              class="small-icon"
+              aria-label="接入外部 Agent"
+              title="接入外部 Agent"
+            >
+              +
+            </button>
+          </div>
+          <div id="agents"></div>
+        </div>
+        <div class="workspace">
+          <span class="device-icon" aria-hidden="true"></span>
+          <div><b>本地工作区</b><span id="networkLabel">正在连接…</span></div>
+          <i id="netDot" aria-hidden="true"></i>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <button
+            id="menu"
+            class="icon-button menu"
+            aria-label="打开工作区导航"
+            aria-expanded="false"
+          >
+            ☰
+          </button>
+          <div class="room-heading">
+            <div class="breadcrumb">
+              工作区<span aria-hidden="true">/</span>讨论室
+            </div>
+            <h1 id="title">讨论室</h1>
+          </div>
+          <button
+            id="roomInfo"
+            class="room-info"
+            aria-label="查看团队成员"
+            aria-controls="team"
+            aria-expanded="false"
+          >
+            <span
+              id="headerAvatars"
+              class="avatar-stack"
+              aria-hidden="true"
+            ></span
+            ><span id="roomMeta">正在连接…</span>
+          </button>
+        </header>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <section id="stream" class="stream" aria-label="讨论记录" tabindex="0">
+          <div id="thread" class="thread"></div>
+        </section>
+        <section class="composer-wrap">
+          <div id="activity" class="activity" aria-live="polite"></div>
+          <form id="composer">
+            <label class="sr-only" for="draft">发送消息</label>
+            <textarea
+              id="draft"
+              disabled
+              rows="2"
+              placeholder="写下消息，或 @ 指定一位 Agent…"
+              maxlength="12000"
+            ></textarea>
+            <div class="composer-actions">
+              <div class="target-wrap">
+                <button
+                  id="targets"
+                  type="button"
+                  class="target-button"
+                  aria-haspopup="dialog"
+                  aria-expanded="false"
+                  disabled
+                >
+                  <span class="at">@</span><span id="targetName">全体成员</span
+                  ><span aria-hidden="true" class="chev">⌄</span>
+                </button>
+                <div
+                  id="targetMenu"
+                  class="target-menu"
+                  role="dialog"
+                  aria-label="选择回应成员"
+                  hidden
+                ></div>
+              </div>
+              <button
+                id="send"
+                type="submit"
+                class="send"
+                aria-label="发送消息"
+                title="发送消息"
+              >
+                ↑
+              </button>
+            </div>
+          </form>
+          <div class="composer-foot">
+            <span class="model-wrap"
+              ><i></i><span id="model">读取模型状态…</span></span
+            ><span class="key-tip"
+              ><kbd>↵</kbd> 发送<span class="sep">·</span
+              ><kbd>⇧ ↵</kbd> 换行</span
+            >
+          </div>
+        </section>
+      </main>
+      <aside id="team" class="team" aria-label="讨论室详情">
+        <div class="team-top">
+          <span class="panel-icon" aria-hidden="true"></span><b>讨论室详情</b
+          ><button
+            id="closeTeam"
+            class="icon-button"
+            aria-label="关闭讨论室详情"
+          >
+            ×
+          </button>
+        </div>
+        <div class="team-content">
+          <div class="team-heading">
+            <h2>桌上成员 <span id="teamCount"></span></h2>
+            <button id="members" class="secondary member-button" disabled>
+              管理
+            </button>
+          </div>
+          <section id="roster" class="roster" aria-label="成员和职责"></section>
+          <section class="model-card" aria-label="内置模型">
+            <div class="model-card-label">
+              <span class="chip-icon" aria-hidden="true">⌘</span>内置模型
+            </div>
+            <b id="teamModel">读取中</b><span id="teamModelStatus"></span>
+          </section>
+        </div>
+      </aside>
+    </div>
+    <dialog id="dialog" aria-labelledby="dialogTitle">
+      <div class="modal-header">
+        <h2 id="dialogTitle"></h2>
+        <button
+          type="button"
+          id="closeDialog"
+          class="icon-button"
+          aria-label="关闭"
+        >
+          ×
+        </button>
+      </div>
+      <div id="dialogBody"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>

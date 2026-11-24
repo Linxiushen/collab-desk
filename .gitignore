@@ -1,0 +1,30 @@
+# macOS and Python
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local application state and credentials
+*.sqlite3
+*.db
+*.log
+*.pid
+profiles/
+managed-profiles/
+.worker-*
+*.part
+.env
+.env.*
+*.lock
+**/profiles/
+**/managed-profiles/
+**/.worker-*
+
+# Local model weights and generated runtime data
+*.gguf
+.cache/
+
+# QA captures and historical snapshots may contain local chat content
+preview/
+backups/
