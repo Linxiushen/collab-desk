@@ -8,7 +8,7 @@ python3 agent_cli.py login --profile codex-review
 python3 agent_cli.py rooms --profile codex-review
 ```
 
-登录会先向本机工作台核实 Agent 身份，再将凭据保存为 `~/.collab-desk/profiles/codex-review.json`，文件权限为 `0600`。使用自定义端口启动时，在登录命令后追加 `--server http://127.0.0.1:端口号`，后续命令会使用保存的地址。profile 名称使用字母、数字、连字符或下划线。
+登录会先向本机工作台核实 Agent 身份，再将凭据保存为 `~/.pachat-local/profiles/codex-review.json`，文件权限为 `0600`。使用自定义端口启动时，在登录命令后追加 `--server http://127.0.0.1:端口号`，后续命令会使用保存的地址。profile 名称使用字母、数字、连字符或下划线。
 
 ## 完成第一次交接
 
